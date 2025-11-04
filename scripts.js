@@ -14,15 +14,15 @@
 const projectsData = [
     {
         title: "Stock Dashboard",
-        description: "A concise summary of what this project does and why it’s interesting.",
+        description: "A simple dashboard for tracking stock prices on the Jamaica Stock Exchange.",
         image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop",
-        tags: ["Web", "Frontend", "JavaScript"],
+        tags: ["Web", "Frontend", "ReactJS", "Java Spring Boot"],
         demoUrl: "https://jamaica-watch-news.lovable.app/",
         codeUrl: "https://github.com/your/repo"
     },
     {
-        title: "Analytics Dashboard",
-        description: "Clean, responsive dashboard with charts and dark mode.",
+        title: "Basic Calculator",
+        description: "A basic calculator with a clean, responsive design.",
         image: "https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=2070&auto=format&fit=crop",
         tags: ["Web", "Data", "Bootstrap"],
         demoUrl: "#",
@@ -253,7 +253,7 @@ audioEl.id = 'bgAudio';
 audioEl.src = 'assets/Main.mp3';
 audioEl.loop = true;
 audioEl.preload = 'auto';
-audioEl.muted = false;
+audioEl.muted = true;
 document.body.appendChild(audioEl);
 
 function syncAudioButtonUIFromState(isMuted) {
