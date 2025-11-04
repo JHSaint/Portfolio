@@ -233,4 +233,199 @@ a:hover { color: #6af2ff; }
     pointer-events: none;
 }
 
+/* ===== Mobile Responsive Design ===== */
+@media (max-width: 768px) {
+    /* Typography adjustments */
+    .hero h1 {
+        font-size: 2rem !important;
+    }
+    .hero .lead {
+        font-size: 1rem;
+    }
+    .section-title {
+        font-size: 0.75rem;
+    }
+    h2 {
+        font-size: 1.75rem !important;
+    }
+
+    /* Hero section */
+    .hero {
+        padding: 6rem 0 4rem;
+    }
+    .hero .btn {
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+    }
+
+    /* Solar system scaling */
+    .solar-system {
+        max-width: 100%;
+        aspect-ratio: 1 / 1;
+        min-height: 300px;
+        max-height: 400px;
+    }
+    .solar-system .sun {
+        width: 80px;
+        height: 80px;
+        margin: -40px 0 0 -40px;
+    }
+    .solar-system .planet {
+        width: 18px;
+        height: 18px;
+    }
+    .solar-system .planet .label {
+        font-size: 10px;
+        top: -24px;
+    }
+
+    /* Project card mobile positioning */
+    .solar-system .project-card {
+        min-width: calc(100% - 2rem);
+        max-width: calc(100% - 2rem);
+        left: 1rem !important;
+        right: 1rem;
+        top: auto !important;
+        bottom: 1rem;
+        position: fixed;
+        z-index: 1050;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+    .solar-system .project-card:after {
+        display: none; /* Hide arrow on mobile */
+    }
+
+    /* Navigation */
+    .navbar-brand {
+        font-size: 1rem;
+    }
+    .navbar-nav .nav-link {
+        padding: 0.5rem 1rem;
+    }
+
+    /* Buttons and interactive elements - touch-friendly */
+    .btn {
+        min-height: 44px; /* iOS touch target */
+        padding: 0.625rem 1.25rem;
+    }
+    .btn-sm {
+        min-height: 36px;
+        padding: 0.5rem 1rem;
+    }
+
+    /* Filters dropdown */
+    .form-select.form-select-sm {
+        min-height: 44px;
+        font-size: 1rem;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 1.5rem 0;
+        text-align: center;
+    }
+    .footer .container {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    /* Contact section */
+    #contact .row {
+        gap: 1.5rem;
+    }
+
+    /* Audio button positioning */
+    .audio-toggle {
+        left: 12px;
+        bottom: 12px;
+        padding: 0.5rem;
+        font-size: 0.875rem;
+    }
+    .back-to-top {
+        right: 12px;
+        bottom: 12px;
+        width: 44px;
+        height: 44px;
+    }
+
+    /* Container padding */
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    /* Section spacing */
+    section {
+        padding: 3rem 0 !important;
+    }
+}
+
+@media (max-width: 576px) {
+    /* Extra small devices */
+    .hero {
+        padding: 5rem 0 3rem;
+    }
+    .hero h1 {
+        font-size: 1.75rem !important;
+    }
+    .hero .lead {
+        font-size: 0.95rem;
+    }
+
+    .solar-system {
+        min-height: 280px;
+        max-height: 350px;
+    }
+    .solar-system .sun {
+        width: 60px;
+        height: 60px;
+        margin: -30px 0 0 -30px;
+    }
+    .solar-system .planet {
+        width: 16px;
+        height: 16px;
+    }
+    .solar-system .planet .label {
+        font-size: 9px;
+        top: -20px;
+    }
+
+    .solar-system .project-card {
+        padding: 0.875rem;
+        font-size: 0.9rem;
+    }
+    .solar-system .project-card h5 {
+        font-size: 1.1rem;
+    }
+
+    /* Stack buttons vertically on very small screens */
+    .hero .d-flex.gap-2 {
+        flex-direction: column;
+        width: 100%;
+    }
+    .hero .d-flex.gap-2 .btn {
+        width: 100%;
+    }
+
+    /* Audio button smaller text */
+    .audio-toggle {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.6rem;
+    }
+    .audio-toggle i {
+        font-size: 0.875rem;
+    }
+}
+
+/* Landscape mobile adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+    .hero {
+        padding: 4rem 0 3rem;
+    }
+    .solar-system {
+        max-height: 350px;
+    }
+}
+
 
