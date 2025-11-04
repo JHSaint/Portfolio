@@ -1,0 +1,236 @@
+/* Minimal, clean styling on top of Bootstrap */
+html {
+    scroll-behavior: smooth;
+}
+body {
+    background-color: #0a0e1c; /* deep navy */
+    color: #eaf1ff; /* light text */
+    background-image:
+        radial-gradient(1px 1px at 25% 15%, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 1px, transparent 2px),
+        radial-gradient(1px 1px at 70% 35%, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 1px, transparent 2px),
+        radial-gradient(2px 2px at 40% 60%, rgba(255,255,255,0.28) 0, rgba(255,255,255,0.28) 1px, transparent 2px),
+        radial-gradient(800px 400px at 10% -10%, rgba(0,229,255,0.12), rgba(0,229,255,0) 60%),
+        radial-gradient(800px 400px at 90% -20%, rgba(255,107,214,0.10), rgba(255,107,214,0) 60%),
+        linear-gradient(180deg, #0a0e1c 0%, #0a1023 60%, #0b1229 100%);
+}
+
+/* Accent palette: aurora neon */
+:root {
+    --accent-cyan: #00e5ff;
+    --accent-magenta: #ff6bd6;
+    --accent-gold: #ffd166;
+    --border-muted: rgba(255,255,255,0.12);
+    --card-bg: #0e1428;
+    --muted-text: #b8c6ff;
+}
+
+.navbar {
+    backdrop-filter: saturate(140%) blur(6px);
+    background: rgba(10, 14, 28, 0.7);
+}
+
+.brand-accent {
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-magenta));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero {
+    padding: 8rem 0 6rem;
+    background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(0,229,255,0.18), rgba(0,229,255,0) 60%),
+        radial-gradient(1200px 600px at 90% -20%, rgba(255,107,214,0.14), rgba(255,107,214,0) 60%);
+}
+
+.section-title {
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #96a6d9;
+}
+
+/* Buttons primary/emphasis */
+.btn-primary {
+    background: var(--accent-cyan);
+    border-color: var(--accent-cyan);
+    color: #00151a;
+}
+.btn-primary:hover {
+    background: #33ecff;
+    border-color: #33ecff;
+    color: #00151a;
+}
+.btn-outline-light {
+    color: var(--accent-magenta);
+    border-color: var(--accent-magenta);
+}
+.btn-outline-light:hover {
+    background: var(--accent-magenta);
+    color: #1a0a16;
+}
+
+/* Card and hover spin */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-muted);
+    transition: transform .4s ease, box-shadow .3s ease, border-color .3s ease;
+    transform-style: preserve-3d;
+}
+.card:hover {
+    box-shadow: 0 16px 40px rgba(0,0,0,0.45), 0 0 0 1px rgba(0,229,255,0.18) inset;
+    border-color: rgba(0,229,255,0.28);
+    animation: spinY 3s linear infinite;
+}
+@keyframes spinY {
+    0% { transform: rotateY(0deg) translateY(-4px); }
+    100% { transform: rotateY(360deg) translateY(-4px); }
+}
+
+.card .card-text { color: var(--muted-text); }
+
+/* Tags and filters with ember accents */
+.badge {
+    background: rgba(0,229,255,0.16);
+    color: #9ef9ff;
+    border: 1px solid rgba(0,229,255,0.45);
+}
+.form-select.form-select-sm {
+    background-color: #0e1428;
+    color: #eaf1ff;
+    border-color: rgba(255,255,255,0.18);
+}
+.form-select.form-select-sm:focus {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 0 .25rem rgba(0,229,255,0.25);
+}
+
+.back-to-top {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 1030;
+    display: none;
+}
+.footer {
+    border-top: 1px solid var(--border-muted);
+}
+
+a { color: var(--accent-cyan); }
+a:hover { color: #6af2ff; }
+
+/* ===== Solar System Projects ===== */
+.solar-system {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    aspect-ratio: 1 / 1; /* square */
+    margin: 0 auto;
+}
+.solar-system .sun {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 120px; height: 120px;
+    margin: -60px 0 0 -60px; /* center */
+    background: radial-gradient(circle, #ffd79a 0%, #ffb261 60%, rgba(255,178,97,0.8) 100%);
+    box-shadow: 0 0 40px 15px rgba(255,178,97,0.35), inset 0 0 30px rgba(255,215,154,0.5);
+    border-radius: 50%;
+    border: 1px solid rgba(255,215,154,0.4);
+}
+.solar-system .orbit {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px dashed rgba(255,255,255,0.12);
+    border-radius: 50%;
+    animation: orbit-rotate linear infinite;
+    pointer-events: none; /* let clicks reach planets */
+}
+@keyframes orbit-rotate {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+.solar-system .planet {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(255,178,97,0.25);
+    pointer-events: auto;
+}
+.solar-system .planet .label {
+    position: absolute;
+    top: -30px; left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 12px;
+    color: #eaf1ff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+    animation: label-counter linear infinite; /* keep text readable */
+}
+@keyframes label-counter {
+    from { transform: translateX(-50%) rotate(0deg); }
+    to   { transform: translateX(-50%) rotate(-360deg); }
+}
+.solar-system .project-card {
+    position: absolute;
+    min-width: 260px;
+    max-width: 320px;
+    background: #121626;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: .75rem;
+    padding: 1rem;
+    color: #e8ecf4;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+    z-index: 2;
+}
+.solar-system .project-card .btn-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    filter: invert(1);
+}
+.solar-system .project-card:after {
+    content: '';
+    position: absolute;
+    width: 0; height: 0;
+    border: 8px solid transparent;
+    border-right-color: #121626; /* arrow pointing left by default */
+    left: -16px; top: 16px;
+}
+.sr-only { /* utility for off-screen text if needed */
+    position: absolute !important;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0);
+    border: 0;
+}
+
+/* Planet filtering states */
+.planet.glow {
+    box-shadow: 0 0 22px 10px rgba(0,229,255,0.55), 0 0 10px 2px rgba(255,107,214,0.35);
+    transform: translate(-50%, -50%) scale(1.08);
+}
+.planet.dim {
+    opacity: 0.35;
+    filter: grayscale(0.2) brightness(0.85);
+}
+
+/* YouTube background audio controls */
+.audio-toggle {
+    position: fixed;
+    left: 16px;
+    bottom: 16px;
+    z-index: 1030;
+}
+/* Hide the iframe visually but keep it active */
+#yt-bg {
+    position: fixed;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+
