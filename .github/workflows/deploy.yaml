@@ -33,11 +33,11 @@ jobs:
           echo "env.js content after injection:"
           cat env.js
           with:
-          - name: Debug
-            env:
-              JSON: ${{ vars.PROJECTS_JSON }}
-            run: |
-              echo "$JSON"
+      - name: Debug
+        env:
+          JSON: ${{ vars.PROJECTS_JSON }}
+        run: |
+          echo "$JSON"
 
 
 
