@@ -22,6 +22,7 @@ const projectsData = [
 if (window.env?.PROJECTS_JSON) {
     try {
         const extraProjects = JSON.parse(window.env.PROJECTS_JSON);
+        console.log(extraProjects);
         if (Array.isArray(extraProjects)) {
             projectsData.push(...extraProjects);
             console.log(`Added ${extraProjects.length} project(s) from PROJECTS_JSON`);
