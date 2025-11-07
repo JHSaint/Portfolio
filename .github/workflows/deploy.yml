@@ -2,11 +2,11 @@ name: Build and Deploy Portfolio
 
 on:
   push:
-    branches: [ main ]   # automatically runs when you push to main
-  workflow_dispatch:      # allows manual trigger from GitHub UI
+    branches: [ main ] 
+  workflow_dispatch: 
 
 permissions:
-  contents: write         # required for deployment
+  contents: write 
 
 jobs:
   deploy:
@@ -17,13 +17,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2 — Create env.js at repo root (since index.html is here)
+      # Step 2 — Create env.js
       - name: Inject environment variables into env.js
         run: |
           echo "window.env = {};" > env.js
           echo "window.env.PROJECTS_JSON = \`${{ vars.PROJECTS_JSON }}\`;" >> env.js
           echo "env.js created in repo root:"
           cat env.js
+
+      # ------------------------------------------------------------------
+      # NEW STEP: Commit the generated env.js file before deployment
+      # This is critical because peaceiris/actions-gh-pages often only deploys committed content.
+      # ------------------------------------------------------------------
+      - name: Commit generated env.js
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Action: Add dynamically generated env.js for deployment'
+          files: 'env.js'
+          # This action requires the "contents: write" permission, which you already have globally.
 
       # Step 3 — Deploy everything in the repo root to GitHub Pages
       - name: Deploy to GitHub Pages
