@@ -19,15 +19,15 @@ const projectsData = [
 // =============================================
 
 // Merge extra projects defined via GitHub environment variable
-if (window.env?.EXTRA_PROJECTS_JSON) {
+if (window.env?.PROJECTS_JSON) {
     try {
-        const extraProjects = JSON.parse(window.env.EXTRA_PROJECTS_JSON);
+        const extraProjects = JSON.parse(window.env.PROJECTS_JSON);
         if (Array.isArray(extraProjects)) {
             projectsData.push(...extraProjects);
-            console.log(`Added ${extraProjects.length} project(s) from EXTRA_PROJECTS_JSON`);
+            console.log(`Added ${extraProjects.length} project(s) from PROJECTS_JSON`);
         }
     } catch (err) {
-        console.error("Invalid EXTRA_PROJECTS_JSON format:", err);
+        console.error("Invalid PROJECTS_JSON format:", err);
     }
 }
 
