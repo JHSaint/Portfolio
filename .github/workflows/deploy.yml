@@ -20,22 +20,15 @@ jobs:
       # Step 2 — Create env.js
       - name: Inject environment variables into env.js
         run: |
-          # 0. Install necessary utilities (jq and sed are standard in runners)
-          sudo apt-get update && sudo apt-get install -y jq
-          
           # 1. Start the env.js file
           echo "window.env = {};" > env.js
           
-          # 2. Safely process the multiline variable content
-          #    - echo the variable (which contains the raw JSON)
-          #    - jq -c '@json' escapes internal quotes and puts new quotes around the whole string
-          #    - sed removes the new surrounding quotes added by @json
-          JSON_STRING=$(echo "${{ vars.PROJECTS_JSON }}" | jq -c '@json' | sed 's/^"//; s/"$//')
+          # 2. Safely escape the JSON for insertion into the JavaScript template literal.
+          #    'tr' removes newlines, 'sed' escapes backslashes.
+          JSON_STRING=$(echo "${{ vars.PROJECTS_JSON }}" | tr '\n' ' ' | sed 's/\\/\\\\/g')
           
-          # 3. Write the final JavaScript line using the safely processed string.
-          #    This creates: window.env.PROJECTS_JSON = '[{"title": "...", ...}]';
-          #    The single quotes correctly wrap the entire JSON string.
-          echo "window.env.PROJECTS_JSON = '$JSON_STRING';" >> env.js
+          # 3. Write the JSON string to the file using the JavaScript template literal.
+          echo "window.env.PROJECTS_JSON = \`${JSON_STRING}\`;" >> env.js
           
           echo "env.js created in repo root:"
           cat env.js
