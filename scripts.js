@@ -21,6 +21,7 @@ const projectsData = [
 // Merge extra projects defined via GitHub environment variable
 if (window.env?.PROJECTS_JSON) {
     try {
+        console.log(window.env.PROJECTS_JSON);
         const extraProjects = JSON.parse(window.env.PROJECTS_JSON);
         console.log(extraProjects);
         if (Array.isArray(extraProjects)) {
@@ -34,9 +35,9 @@ if (window.env?.PROJECTS_JSON) {
 
 // Filter projects if FEATURE_PROJECTS variable is defined
 const projectsToRender = (() => {
-    const envVar = window.env?.FEATURE_PROJECTS;
+    const envVar = window.env?.PROJECTS_JSON;
     if (!envVar) return projectsData;
-    const allowed = envVar.split(',').map(s => s.trim());
+    const allowed = projectsData.split(',').map(s => s.trim());
     return projectsData.filter(p => allowed.includes(p.title));
 })();
 
