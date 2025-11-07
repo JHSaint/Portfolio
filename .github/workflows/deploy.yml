@@ -23,12 +23,10 @@ jobs:
           echo "window.env = {};" > env.js
           echo "window.env.PROJECTS_JSON = `" >> env.js
           cat <<'EOF' >> env.js
-          ${{ vars.PROJECTS_JSON }}
-          EOF
-              echo "`;" >> env.js
+          echo "\`;" >> env.js
 
-              echo "env.js content after injection:"
-              cat env.js
+          echo "env.js content after injection:"
+          cat env.js
       # ------------------------------------------------------------------
       # NEW STEP: Commit the generated env.js file before deployment
       # This is critical because peaceiris/actions-gh-pages often only deploys committed content.
