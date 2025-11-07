@@ -20,25 +20,14 @@ jobs:
       # Step 2 — Create env.js
       - name: Inject environment variables into env.js
         run: |
-          # 0. Install necessary utilities (jq and sed are standard in most runners)
-          sudo apt-get update && sudo apt-get install -y jq
-          
-          # 1. Start the env.js file
           echo "window.env = {};" > env.js
-          
-          # 2. Safely process the strict JSON variable content:
-          #    - jq -c '@json' serializes the content onto a single line and escapes internal quotes
-          #      (Note: It also adds a new set of surrounding double quotes)
-          #    - sed 's/^"//; s/"$//' removes the new surrounding double quotes added by jq,
-          #      leaving a clean, single-line JSON string ready for injection.
-          JSON_STRING=$(echo "${{ vars.PROJECTS_JSON }}" | jq -c '@json' | sed 's/^"//; s/"$//')
-          
-          # 3. Write the final JavaScript line, using single quotes for the assignment.
-          #    Final output will look like: window.env.PROJECTS_JSON = '[{"title": "...", ...}]';
-          echo "window.env.PROJECTS_JSON = '$JSON_STRING';" >> env.js
+          echo "window.env.PROJECTS_JSON = \`" >> env.js
+          echo "${{ vars.PROJECTS_JSON }}" >> env.js
+          echo "\`;" >> env.js
           
           echo "env.js content after injection:"
           cat env.js
+
       # ------------------------------------------------------------------
       # NEW STEP: Commit the generated env.js file before deployment
       # This is critical because peaceiris/actions-gh-pages often only deploys committed content.
