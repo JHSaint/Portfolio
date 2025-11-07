@@ -1,33 +1,9 @@
 // =============================================
-// HOW TO UPDATE YOUR PROJECTS
-// 1) Edit the projectsData array below. Each object represents a project.
-// 2) Fields:
-//    - title (string)
-//    - description (string)
-//    - image (string URL or relative path)
-//    - tags (array of strings, used for filters)
-//    - demoUrl (string URL) optional
-//    - codeUrl (string URL) optional
-// 3) Save. The UI updates automatically.
+// PORTFOLIO PROJECTS CONFIGURATION
 // =============================================
 
+// Default static projects — safe fallback
 const projectsData = [
-    {
-        title: "Stock Dashboard",
-        description: "A simple dashboard for tracking stock prices on the Jamaica Stock Exchange.",
-        image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop",
-        tags: ["Web", "Frontend", "ReactJS", "Java Spring Boot"],
-        demoUrl: "https://jamaica-watch-news.lovable.app/",
-        codeUrl: "https://github.com/your/repo"
-    },
-    {
-        title: "Basic Calculator",
-        description: "A basic calculator with a clean, responsive design.",
-        image: "https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=2070&auto=format&fit=crop",
-        tags: ["Web", "Data", "Bootstrap"],
-        demoUrl: "#",
-        codeUrl: "#"
-    },
     {
         title: "Mobile Companion",
         description: "A lightweight progressive web app for on-the-go tasks.",
@@ -37,6 +13,35 @@ const projectsData = [
         codeUrl: "#"
     }
 ];
+
+// =============================================
+// ENVIRONMENT VARIABLE INTEGRATION (GitHub Pages)
+// =============================================
+
+// Merge extra projects defined via GitHub environment variable
+if (window.env?.EXTRA_PROJECTS_JSON) {
+    try {
+        const extraProjects = JSON.parse(window.env.EXTRA_PROJECTS_JSON);
+        if (Array.isArray(extraProjects)) {
+            projectsData.push(...extraProjects);
+            console.log(`Added ${extraProjects.length} project(s) from EXTRA_PROJECTS_JSON`);
+        }
+    } catch (err) {
+        console.error("Invalid EXTRA_PROJECTS_JSON format:", err);
+    }
+}
+
+// Filter projects if FEATURE_PROJECTS variable is defined
+const projectsToRender = (() => {
+    const envVar = window.env?.FEATURE_PROJECTS;
+    if (!envVar) return projectsData;
+    const allowed = envVar.split(',').map(s => s.trim());
+    return projectsData.filter(p => allowed.includes(p.title));
+})();
+
+// =============================================
+// CORE UI LOGIC (unchanged from original)
+// =============================================
 
 // Render year
 document.getElementById('year').textContent = new Date().getFullYear();
@@ -101,11 +106,10 @@ function randomHexColor() {
 function renderSolarSystem(projects) {
     const system = document.getElementById('solarSystem');
     if (!system) return;
-    // Remove previous orbits except the sun
     Array.from(system.querySelectorAll('.orbit')).forEach(n => n.remove());
-    const baseRadius = 100; // first orbit radius
-    const gap = 60; // distance between orbits
-    const baseDuration = 30; // seconds for outermost
+    const baseRadius = 100;
+    const gap = 60;
+    const baseDuration = 30;
     projects.forEach((proj, idx) => {
         const radius = baseRadius + idx * gap;
         const diameter = radius * 2;
@@ -120,8 +124,7 @@ function renderSolarSystem(projects) {
         planet.className = 'planet';
         const base = randomHexColor();
         planet.style.background = `radial-gradient(circle at 30% 30%, rgba(255,255,255,0.75), rgba(255,255,255,0.2) 35%, ${base} 80%)`;
-        const offset = radius;
-        planet.style.transform = `translate(-50%, calc(-50% - ${offset}px))`;
+        planet.style.transform = `translate(-50%, calc(-50% - ${radius}px))`;
         planet.dataset.index = idx;
         planet.dataset.tags = (proj.tags || []).join(',');
 
@@ -149,7 +152,7 @@ function showProjectCardAtPlanet(planetEl, project) {
         <button type="button" class="btn-close" aria-label="Close"></button>
         <h5 class="mb-2">${project.title}</h5>
         <p class="mb-3 text-secondary">${project.description}</p>
-        <div class="d-flex gap-2 flex-wrap mb-3">${(project.tags||[]).map(t=>`<span class='badge rounded-pill'>${t}</span>`).join('')}</div>
+        <div class="d-flex gap-2 flex-wrap mb-3">${(project.tags || []).map(t => `<span class='badge rounded-pill'>${t}</span>`).join('')}</div>
         <div class="d-flex gap-2">
             ${project.demoUrl ? `<a class='btn btn-sm btn-primary' target='_blank' rel='noopener' href='${project.demoUrl}'><i class="bi bi-box-arrow-up-right me-1"></i> Demo</a>` : ''}
             ${project.codeUrl ? `<a class='btn btn-sm btn-outline-light' target='_blank' rel='noopener' href='${project.codeUrl}'><i class="bi bi-github me-1"></i> Code</a>` : ''}
@@ -176,9 +179,8 @@ function showProjectCardAtPlanet(planetEl, project) {
     }
 
     system.appendChild(card);
-
-    // Close interactions
     card.querySelector('.btn-close').addEventListener('click', () => card.remove());
+
     const handleOutside = (ev) => {
         if (!card.contains(ev.target) && !planetEl.contains(ev.target)) {
             card.remove();
@@ -197,30 +199,10 @@ function showProjectCardAtPlanet(planetEl, project) {
     document.addEventListener('keydown', handleEsc);
 }
 
-// Modal logic (kept for future use)
-const modalElement = document.getElementById('projectModal');
-const bsModal = new bootstrap.Modal(modalElement);
-function openProjectModal(project) {
-    document.getElementById('projectModalLabel').textContent = project.title;
-    document.getElementById('modalImage').src = project.image;
-    document.getElementById('modalImage').alt = project.title + ' screenshot';
-    document.getElementById('modalDescription').textContent = project.description;
-    const tagsWrap = document.getElementById('modalTags');
-    tagsWrap.innerHTML = '';
-    (project.tags || []).forEach(t => {
-        const s = document.createElement('span');
-        s.className = 'badge rounded-pill';
-        s.textContent = t;
-        tagsWrap.appendChild(s);
-    });
-    const demo = document.getElementById('modalDemo');
-    const code = document.getElementById('modalCode');
-    if (project.demoUrl) { demo.href = project.demoUrl; demo.classList.remove('disabled'); } else { demo.href = '#'; demo.classList.add('disabled'); }
-    if (project.codeUrl) { code.href = project.codeUrl; code.classList.remove('disabled'); } else { code.href = '#'; code.classList.add('disabled'); }
-    bsModal.show();
-}
+// =============================================
+// Smooth Scroll and Audio Features (unchanged)
+// =============================================
 
-// Smooth-scroll active link highlighting
 const sections = ['about', 'projects', 'contact'].map(id => document.getElementById(id));
 const navLinks = Array.from(document.querySelectorAll('.navbar .nav-link'));
 function onScroll() {
@@ -238,15 +220,14 @@ function onScroll() {
 }
 document.addEventListener('scroll', onScroll);
 
-// Back to top
 const backToTop = document.getElementById('backToTop');
 backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 function toggleBackToTop() {
-    if (window.scrollY > 300) { backToTop.style.display = 'inline-flex'; } else { backToTop.style.display = 'none'; }
+    backToTop.style.display = window.scrollY > 300 ? 'inline-flex' : 'none';
 }
 document.addEventListener('scroll', toggleBackToTop);
 
-// Background audio via <audio> element (local mp3)
+// Background audio
 const audioBtn = document.getElementById('audioToggle');
 const audioEl = document.createElement('audio');
 audioEl.id = 'bgAudio';
@@ -272,20 +253,20 @@ function syncAudioButtonUIFromState(isMuted) {
     try { await audioEl.play(); } catch (_) {}
     syncAudioButtonUIFromState(audioEl.muted);
 })();
-
 audioBtn.addEventListener('click', async () => {
     if (audioEl.paused) { try { await audioEl.play(); } catch (_) {} }
     audioEl.muted = !audioEl.muted;
     syncAudioButtonUIFromState(audioEl.muted);
 });
 
-// Init
+// =============================================
+// INITIALIZATION
+// =============================================
+
 (function init() {
-    renderFilters(getAllTags(projectsData));
-    renderSolarSystem(projectsData);
+    renderFilters(getAllTags(projectsToRender));
+    renderSolarSystem(projectsToRender);
     onScroll();
     toggleBackToTop();
     wireFilterClicks();
 })();
-
-
