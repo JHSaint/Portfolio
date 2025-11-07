@@ -21,10 +21,10 @@ jobs:
       - name: Inject environment variables into env.js
         run: |
           echo "window.env = {};" > env.js
-          echo "window.env.PROJECTS_JSON = `" >> env.js
-          cat <<'EOF' >> env.js
+          echo "window.env.PROJECTS_JSON = \`" >> env.js
+          echo "${{ vars.PROJECTS_JSON }}" >> env.js
           echo "\`;" >> env.js
-
+      
           echo "env.js content after injection:"
           cat env.js
 
