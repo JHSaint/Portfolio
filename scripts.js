@@ -3,16 +3,7 @@
 // =============================================
 
 // Default static projects — safe fallback
-const projectsData = [
-    {
-        title: "Mobile Companion",
-        description: "A lightweight progressive web app for on-the-go tasks.",
-        image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=2069&auto=format&fit=crop",
-        tags: ["PWA", "Frontend"],
-        demoUrl: "#",
-        codeUrl: "#"
-    }
-];
+const projectsData = [];
 
 // =============================================
 // ENVIRONMENT VARIABLE INTEGRATION (GitHub Pages)
@@ -33,12 +24,17 @@ if (window.env?.PROJECTS_JSON) {
     }
 }
 
-// Filter projects if FEATURE_PROJECTS variable is defined
+// Filter projects if FEATURE_PROJECTS variable is defined (comma-separated project titles)
 const projectsToRender = (() => {
-    const envVar = window.env?.PROJECTS_JSON;
-    if (!envVar) return projectsData;
-    const allowed = projectsData.split(',').map(s => s.trim());
-    return projectsData.filter(p => allowed.includes(p.title));
+    const featureProjects = window.env?.FEATURE_PROJECTS;
+    if (!featureProjects) return projectsData;
+    
+    // Parse comma-separated list of allowed project titles
+    const allowedTitles = featureProjects.split(',').map(s => s.trim()).filter(Boolean);
+    if (allowedTitles.length === 0) return projectsData;
+    
+    // Filter projects to only include those with matching titles
+    return projectsData.filter(p => allowedTitles.includes(p.title));
 })();
 
 // =============================================
