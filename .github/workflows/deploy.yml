@@ -19,28 +19,20 @@ jobs:
 
       # Step 2 — Create env.js
       - name: Inject environment variables into env.js
-        shell: bash
         run: |
-          # 1. Start the env.js file
           echo "window.env = {};" > env.js
-          
-          # 2. Process the variable content:
-          JSON_STRING=$(echo "${{ vars.PROJECTS_JSON }}" | tr -d '\n\r' | sed "s/'/\\\'/g")
-          
-          # 3. Write the final JavaScript line, using single quotes to wrap the clean, single-line JSON string.
-          echo "window.env.PROJECTS_JSON = '$JSON_STRING';" >> env.js
-          
+          echo "window.env.PROJECTS_JSON = `" >> env.js
+          cat <<'EOF' >> env.js
+          echo "\`;" >> env.js
+
           echo "env.js content after injection:"
           cat env.js
-          with:
+
       - name: Debug
         env:
           JSON: ${{ vars.PROJECTS_JSON }}
         run: |
           echo "$JSON"
-
-
-
       # ------------------------------------------------------------------
       # NEW STEP: Commit the generated env.js file before deployment
       # This is critical because peaceiris/actions-gh-pages often only deploys committed content.
